@@ -17,16 +17,11 @@ from plugins.manager import plugin_manager
 from players.teams import teams_by_number
 
 # GunGame
+from gungame.core.events.included.teams import GG_Team_Level_Up, GG_Team_Win
 from gungame.core.players.attributes import AttributePreHook
 from gungame.core.players.dictionary import player_dictionary
 from gungame.core.teams import team_levels
 from gungame.core.weapons.manager import weapon_order_manager
-
-# Plugin
-from .custom_events import (
-    GG_Team_Level_Up,
-    GG_Team_Win,
-)
 
 if "capture_the_flag" not in map(
     attrgetter("name"),
@@ -51,6 +46,11 @@ def load():
     team_levels.clear(value=1)
 
 
+def unload():
+    win_count.set_int(DEFAULT_WIN_COUNT)
+    team_levels.clear()
+
+
 # =============================================================================
 # >> GAME EVENTS
 # =============================================================================
@@ -73,6 +73,11 @@ def _increase_team_score(game_event):
         event.old_level = current
         event.new_level = team_levels[team]
         event.style = "ctf"
+
+
+@Event("gg_start")
+def _set_win_count(game_event):
+    win_count.set_int(weapon_order_manager.max_levels)
 
 
 # =============================================================================
