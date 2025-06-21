@@ -1,6 +1,6 @@
 # ../gungame/plugins/custom/gg_capture_the_flag/gg_capture_the_flag.py
 
-"""."""
+"""GunGame players level up as a team when they capture the flag."""
 
 # =============================================================================
 # >> IMPORTS
